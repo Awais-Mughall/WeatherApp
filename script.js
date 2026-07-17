@@ -1,7 +1,5 @@
-// API Key
-const apiKey = "YOUR_API_KEY";
-
 // HTML Elements
+
 const cityInput = document.getElementById("city");
 const searchBtn = document.getElementById("searchBtn");
 
@@ -12,15 +10,14 @@ const windSpeed = document.getElementById("windSpeed");
 
 
 // Search Button Event
+
 searchBtn.addEventListener("click", function () {
 
     let city = cityInput.value.trim();
 
     if (city === "") {
-
-        alert("Please Enter City Name");
+        alert("Please enter a city name!");
         return;
-
     }
 
     getWeather(city);
@@ -28,10 +25,11 @@ searchBtn.addEventListener("click", function () {
 });
 
 
-// Weather Function
+// Function to Fetch Weather Data
+
 function getWeather(city) {
 
-    let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    let url = `https://p2pclouds.up.railway.app/v1/learn/weather?city=${city}`;
 
     fetch(url)
 
@@ -43,9 +41,9 @@ function getWeather(city) {
 
         .then(function (data) {
 
-            if (data.cod == "404") {
+            if (data.error) {
 
-                alert("City Not Found");
+                alert(data.error.message);
                 return;
 
             }
@@ -54,29 +52,28 @@ function getWeather(city) {
 
         })
 
-        .catch(function (error) {
+        .catch(function () {
 
-            console.log(error);
-            alert("Something Went Wrong");
+            alert("Something Went Wrong!");
 
         });
 
 }
 
 
-// Display Weather Function
+// Function to Display Weather
+
 function displayWeather(data) {
 
-    cityName.innerHTML =
-        "📍 " + data.name;
+    cityName.innerHTML = "📍 " + data.location.name;
 
     temperature.innerHTML =
-        "🌡️ Temperature : " + data.main.temp + " °C";
+        "🌡️ Temperature : " + data.current.temp_c + " °C";
 
     humidity.innerHTML =
-        "💧 Humidity : " + data.main.humidity + " %";
+        "💧 Humidity : " + data.current.humidity + " %";
 
     windSpeed.innerHTML =
-        "🌬️ Wind Speed : " + data.wind.speed + " m/s";
+        "🌬️ Wind Speed : " + data.current.wind_kph + " km/h";
 
 }
